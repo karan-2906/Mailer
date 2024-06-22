@@ -4,23 +4,23 @@ const userSchema = new mongoose.Schema(
     {
         sendermail: {
             type: String,
-           required: true
+            // required: true
         },
         sendername: {
             type: String,
-           required: true
+            // required: true
         },
         receivername: {
             type: String,
-           required: true
+            // required: true
         },
         receivermail: {
             type: String,
-           required: true
+            // required: true
         },
         content: {
             type: String,
-           required: true
+            // required: true
         },
         subject: {
             type: String,
@@ -29,44 +29,43 @@ const userSchema = new mongoose.Schema(
         Details: {
             ip: {
                 type: String,
-               required: true
+                // required: true
             },
             latitude: {
                 type: String,
-               required: true
+                // required: true
             },
             longitude: {
                 type: String,
-               required: true
+                // required: true
             },
             country: {
                 type: String,
-               required: true
+                // required: true
             },
             state: {
                 type: String,
-               required: true
+                // required: true
             },
             district: {
                 type: String,
-               required: true
+                // required: true
             },
             city: {
                 type: String,
-               required: true
+                // required: true
             },
             pincode: {
                 type: String,
-               required: true
+                // required: true
             },
             address: {
                 type: String,
-               required: true
+                // required: true
             },
         },
-        Created_at: {type: Date, default: Date.now},
     },
-    // { timestamps: true }
+    { timestamps: true }
 )
 
 export const Faker = mongoose.models.User || mongoose.model('User', userSchema)

@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import { Faker } from "../../lib/models";
-import axios from "axios";
 
 const maiurl: string = process.env.MAIL_URL ?? "";
 const ipurl: string = process.env.IP_URl ?? "";
@@ -66,8 +65,7 @@ export async function POST(req: NextRequest) {
         receivermail: receiverMail,
         subject: subject,
         content: message,
-        Details: [
-          {
+        Details: {
             ip: ip,
             longitude: longitude,
             latitude: latitude,
@@ -77,8 +75,7 @@ export async function POST(req: NextRequest) {
             city: detailData.results[0].city,
             pincode: detailData.results[0].postcode,
             address: detailData.results[0].formatted,
-          },
-        ],
+      },
       });
       await faker.save();
 
@@ -121,8 +118,9 @@ export async function POST(req: NextRequest) {
       ],
     }),
   });
-  console.log(send.statusText);
-  return NextResponse.json({ message: "sending", mongo });
+  const status = send.status
+  console.log("Mail:" , send.statusText);
+  return NextResponse.json({ message: "sending", mongo ,status });
 }
 
 // export const work = async ({

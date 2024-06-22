@@ -23,11 +23,12 @@ export default function Home() {
       receiverName,
     });
     console.log(response.data.message);
-    console.log(response.data.mongo)
-    if (response.data.message === "sending") {
+    console.log("Getting user Details", response.data.mongo)
+    if (response.data.message === "sending" && response.data.status === 200) {
       toast.success("Mail Sent")
-    } else {
-      toast.error("Mail Not Sent")
+    } 
+    if(response.data.status !== 200) {
+      toast.error("Error in the Data Filled") 
     }
   };
 
