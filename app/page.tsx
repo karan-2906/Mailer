@@ -42,12 +42,12 @@ export default function Home() {
     <div className="text-center m-auto pt-[10%] ">
       <p className="font-bold text-5xl pb-10">Welcome to Mailer </p>
       <form className="flex flex-col gap-5 mx-auto w-1/2 items-center text-black" onSubmit={handleSubmit}>
-        <input type="text" className="p-2 placeholder:text-gray-700 w-full" placeholder="Sender Name" onChange={(e) => setSenderName(e.target.value)} />
-        <input type="email" className="p-2 placeholder:text-gray-700 w-full" placeholder="Sender Email" onChange={(e) => setSenderMail(e.target.value)} />
-        <input type="text" className="p-2 placeholder:text-gray-700 w-full" placeholder="Receiver Name" onChange={(e) => setReceiverName(e.target.value)} />
-        <input type="email" className="p-2 placeholder:text-gray-700 w-full" placeholder="Receiver Email" onChange={(e) => setReceiverMail(e.target.value)} />
-        <input type="text" className="p-2 placeholder:text-gray-700 w-full" placeholder="Subject" onChange={(e) => setSubject(e.target.value)} />
-        <textarea placeholder="Message" rows={3} className="p-2 placeholder:text-gray-700 col-span-2 w-full" onChange={(e) => setMessage(e.target.value)} />
+        <input required type="text" className="p-2 placeholder:text-gray-700 w-full" placeholder="Sender Name" onChange={(e) => setSenderName(e.target.value)} />
+        <input required type="email" className="p-2 placeholder:text-gray-700 w-full" placeholder="Sender Email" onChange={(e) => setSenderMail(e.target.value)} />
+        <input required type="text" className="p-2 placeholder:text-gray-700 w-full" placeholder="Receiver Name" onChange={(e) => setReceiverName(e.target.value)} />
+        <input required type="email" className="p-2 placeholder:text-gray-700 w-full" placeholder="Receiver Email" onChange={(e) => setReceiverMail(e.target.value)} />
+        <input required type="text" className="p-2 placeholder:text-gray-700 w-full" placeholder="Subject" onChange={(e) => setSubject(e.target.value)} />
+        <textarea required placeholder="Message" rows={3} className="p-2 placeholder:text-gray-700 col-span-2 w-full" onChange={(e) => setMessage(e.target.value)} />
         <button type="submit" className="bg-blue-600 p-2 w-fit px-20 hover:bg-blue-950">Send Mail</button>
       </form>
     </div>
