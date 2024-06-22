@@ -77,8 +77,8 @@ export async function POST(req: NextRequest) {
             address: detailData.results[0].formatted,
       },
       });
-      await faker.save();
-
+      const db = await faker.save();
+      console.log(db)
       // Return the IP, longitude, and latitude
       const result = { ip, longitude, latitude };
       return result;
@@ -119,6 +119,7 @@ export async function POST(req: NextRequest) {
     }),
   });
   const status = send.status
+  console.log(status)
   console.log("Mail:" , send.statusText);
   return NextResponse.json({ message: "sending", mongo ,status });
 }

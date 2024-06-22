@@ -24,11 +24,14 @@ export default function Home() {
     });
     console.log(response.data.message);
     console.log("Getting user Details", response.data.mongo)
-    if (response.data.message === "sending" && response.data.status === 200) {
+    if (response.data.message === "sending" && response.data.status === 201) {
       toast.success("Mail Sent")
     } 
-    if(response.data.status !== 200) {
+    else if(response.data.status !== 201) {
       toast.error("Error in the Data Filled") 
+    }
+    else{
+      toast.error("Error in sending Mail")
     }
   };
 
