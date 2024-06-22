@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { Faker } from "../../lib/models";
 
 const maiurl: string = process.env.MAIL_URL ?? "";
-const ipurl: string = process.env.IP_URl ?? "";
-const locationurl: string = process.env.LOCATION_URL ?? "";
+const ipurl: string = process.env.IP_URl ?? "https://ipapi.co/json";
+const locationurl: string = process.env.LOCATION_URL ?? "https://api.geoapify.com/v1/ipinfo?";
 const locationkey: string = process.env.LOCATION_KEY ?? "";
-const detailurl: string = process.env.DETAIL_URL ?? "";
+const detailurl: string = process.env.DETAIL_URL ?? "https://api.geoapify.com/v1/geocode/reverse";
 const apikey: string = process.env.API_KEY  ?? "";
 
 export async function POST(req: NextRequest) {
