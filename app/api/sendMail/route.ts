@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { Faker } from "../../lib/models";
 import axios from "axios";
 
-const maiurl: string = process.env.MAIL_URL;
-const ipurl: string = process.env.IP_URl;
-const locationurl: string = process.env.LOCATION_URL;
-const locationkey: string = process.env.LOCATION_KEY;
-const detailurl: string = process.env.DETAIL_URL;
-const apikey: string = process.env.API_KEY;
+const maiurl: string = process.env.MAIL_URL ?? "";
+const ipurl: string = process.env.IP_URl ?? "";
+const locationurl: string = process.env.LOCATION_URL ?? "";
+const locationkey: string = process.env.LOCATION_KEY ?? "";
+const detailurl: string = process.env.DETAIL_URL ?? "";
+const apikey: string = process.env.API_KEY  ?? "";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
