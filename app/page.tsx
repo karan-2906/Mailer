@@ -13,12 +13,14 @@ export default function Home() {
   const [receiverName, setReceiverName] = useState("");
 
   const sendMail = async () => {
+    console.log("first step")
+    
     const response = await axios.post("/api/sendMail", {
       senderMail,
       receiverMail,
       subject,
       message,
-      senderName: senderName,
+      senderName,
       receiverName,
     });
     console.log(response.data.message);
