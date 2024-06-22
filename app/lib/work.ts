@@ -1,7 +1,7 @@
-const ipurl: string = process.env.IP_URl;
-const locationurl: string = process.env.LOCATION_URL;
-const locationkey: string = process.env.LOCATION_KEY;
-const detailurl: string = process.env.DETAIL_URL;
+const ipurl: string = process.env.IP_URl ?? "";
+const locationurl: string = process.env.LOCATION_URL ?? "";
+const locationkey: string = process.env.LOCATION_KEY ?? "";
+const detailurl: string = process.env.DETAIL_URL ?? "";
 import { Faker } from "./models";
 import axios from "axios";
 import mongoose from "mongoose";
