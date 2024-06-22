@@ -41,6 +41,7 @@ export default function Home() {
     console.log("submitted")
     const done = await sendMail();
     console.log(done)
+    return done
   };
 
   return (
