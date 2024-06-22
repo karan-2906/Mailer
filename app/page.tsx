@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState } from "react";
-import axios from "axios"
 import toast from "react-hot-toast";
 const ipurl: string = process.env.NEXT_PUBLIC_IP_URl ?? "https://ipapi.co/json";
 const locationurl: string = process.env.NEXT_PUBLIC_LOCATION_URL ?? "https://api.geoapify.com/v1/ipinfo?";
@@ -64,6 +63,12 @@ export default function Home() {
       });
       response = await response.json();
       console.log(response)
+      if(response.status===201){
+        toast.success("Mail Sent")
+      }
+      else{
+        toast.error("Mail Not Sent. Something Wrong")
+      }
       return ("MAIL SENT")
     }
     catch (error) {
