@@ -13,7 +13,6 @@ export default function Home() {
   const [receiverName, setReceiverName] = useState("");
 
   const sendMail = async () => {
-    // console.log("sending")
     const response = await axios.post("/api/sendMail", {
       senderMail,
       receiverMail,
@@ -26,19 +25,22 @@ export default function Home() {
     console.log("Getting user Details", response.data.mongo)
     if (response.data.message === "sending" && response.data.status === 201) {
       toast.success("Mail Sent")
-    } 
-    else if(response.data.status !== 201) {
-      toast.error("Error in the Data Filled") 
     }
-    else{
+    else if (response.data.status !== 201) {
+      toast.error("Error in the Data Filled")
+    }
+    else {
       toast.error("Error in sending Mail")
     }
+    console.log("sent")
+    return response.data.status
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted")
-    sendMail();
+    const done = sendMail();
+    console.log(done)
   };
 
   return (
