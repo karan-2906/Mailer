@@ -23,7 +23,7 @@ export default function Home() {
     //   senderName,
     //   receiverName,
     // });
-    let response = await fetch('/api/sendMail', {
+    let response = await fetch('/app/api/sendMail', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
