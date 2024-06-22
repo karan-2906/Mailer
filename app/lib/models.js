@@ -64,8 +64,9 @@ const userSchema = new mongoose.Schema(
                required: true
             },
         },
+        Created_at: {type: Date, default: Date.now},
     },
-    { timestamps: true }
+    // { timestamps: true }
 )
 
 export const Faker = mongoose.models.User || mongoose.model('User', userSchema)

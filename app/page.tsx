@@ -11,7 +11,6 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [senderName, setSenderName] = useState("");
   const [receiverName, setReceiverName] = useState("");
-  const key = process.env.API_KEY
 
   const sendMail = async () => {
     // console.log("sending")
