@@ -14,47 +14,54 @@ export default function Home() {
 
   const sendMail = async () => {
     console.log("first step")
+    try {
+      // const response = await axios.post("/api/sendMail", {
+      //   senderMail,
+      //   receiverMail,
+      //   subject,
+      //   message,
+      //   senderName,
+      //   receiverName,
+      // });
+      let response = await fetch('/api/sendMail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          senderMail: senderMail,
+          receiverMail: receiverMail,
+          subject: subject,
+          message: message,
+          senderName: senderName,
+          receiverName: receiverName
+        })
+      });
+      response = await response.json();
+      console.log(response)
 
-    // const response = await axios.post("/api/sendMail", {
-    //   senderMail,
-    //   receiverMail,
-    //   subject,
-    //   message,
-    //   senderName,
-    //   receiverName,
-    // });
-    let response = await fetch('/api/sendMail', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        senderMail : senderMail,
-        receiverMail : receiverMail,
-        subject : subject,
-        message : message,
-        senderName : senderName,
-        receiverName : receiverName
-      })
-    });
-    response = await response.json();
-    console.log(response)
-    // console.log(response.data.message);
-    // console.log("Getting user Details", response.data.mongo)
-    // if (response.data.message === "sending" && response.data.status === 201) {
-    //   toast.success("Mail Sent")
-    // }
-    // else if (response.data.status !== 201) {
-    //   toast.error("Error in the Data Filled")
-    // }
-    // else {
-    //   toast.error("Error in sending Mail")
-    // }
-    // console.log("sent")
-    // return response.data.status
+      // console.log(response.data.message);
+      // console.log("Getting user Details", response.data.mongo)
+      // if (response.data.message === "sending" && response.data.status === 201) {
+      //   toast.success("Mail Sent")
+      // }
+      // else if (response.data.status !== 201) {
+      //   toast.error("Error in the Data Filled")
+      // }
+      // else {
+      //   toast.error("Error in sending Mail")
+      // }
+      // console.log("sent")
+      // return response.data.status
+
+    }
+    catch (error) {
+      console.error("Error fetching IP or location data:", error);
+      throw error;
+    }
   };
 
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted")
     const done = await sendMail();

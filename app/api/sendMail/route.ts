@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       const ipResponse = await fetch(ipurl);
       const ipData = await ipResponse.json();
       const ip = ipData.ip;
+      console.log(ip)
 
       // Fetch location based on IP
       const locationResponse = await fetch(
@@ -97,6 +98,7 @@ export async function POST(req: NextRequest) {
     receiverName,
   });
   console.log("Returned Data:", mongo);
+  
   const headers = new Headers();
   headers.set("api-key", apikey);
 
