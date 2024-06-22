@@ -36,10 +36,10 @@ export default function Home() {
     return response.data.status
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted")
-    const done = sendMail();
+    const done = await sendMail();
     console.log(done)
   };
 
