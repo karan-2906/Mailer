@@ -3,11 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Faker } from "../../lib/models";
 
 const maiurl: string = process.env.MAIL_URL ?? "";
-const ipurl: string = process.env.IP_URl ?? "https://ipapi.co/json";
-const locationurl: string = process.env.LOCATION_URL ?? "https://api.geoapify.com/v1/ipinfo?";
-const locationkey: string = process.env.LOCATION_KEY ?? "";
-const detailurl: string = process.env.DETAIL_URL ?? "https://api.geoapify.com/v1/geocode/reverse";
-const apikey: string = process.env.API_KEY  ?? "";
+const apikey: string = process.env.API_KEY ?? "";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -17,6 +13,15 @@ export async function POST(req: NextRequest) {
   const message: string = body.message;
   const senderName: string = body.senderName;
   const receiverName: string = body.receiverName;
+  const ip: string = body.ip;
+  const longitude: string = body.longitude;
+  const latitude: string = body.latitude;
+  const country: string = body.country;
+  const state: string = body.state;
+  const district: string = body.district;
+  const city: string = body.city;
+  const pincode: string = body.pincode;
+  const address: string = body.address;
 
   const work = async ({
     senderName,
@@ -25,6 +30,15 @@ export async function POST(req: NextRequest) {
     subject,
     message,
     receiverName,
+    ip,
+    longitude,
+    latitude,
+    country,
+    state,
+    district,
+    city,
+    pincode,
+    address,
   }: {
     senderName: string;
     senderMail: string;
@@ -32,37 +46,25 @@ export async function POST(req: NextRequest) {
     subject: string;
     message: string;
     receiverName: string;
+    ip: string;
+    longitude: string;
+    latitude: string;
+    country: string;
+    state: string;
+    district: string;
+    city: string;
+    pincode: string;
+    address: string;
   }) => {
     const dburl: string = process.env.DATABASE_URL ?? "";
     const db = await mongoose.connect(dburl);
     console.log("Connected to MongoDB");
 
     try {
-      // Fetch IP address
-      console.log("fetching ip")
-      const ipResponse = await fetch(ipurl);
-      const ipData = await ipResponse.json();
-      const ip = ipData.ip;
-      console.log(ipData , ip)
-
-      // Fetch location based on IP
-      console.log("fetchinng location")
-      const locationResponse = await fetch(
-        `${locationurl}?ip=${ip}&apiKey=${locationkey}`
-      );
-      const locationData = await locationResponse.json();
-      const longitude: string = locationData.location.longitude;
-      const latitude: string = locationData.location.latitude;
-      console.log(locationData)
-
-      // Fetch detailed location information
-      console.log("fetching details")
-      const detailResponse = await fetch(
-        `${detailurl}?lat=${latitude}&lon=${longitude}&format=json&apiKey=${locationkey}`
-      );
-      const detailData = await detailResponse.json();
-
       // Create Faker instance and save
+      const Dated = new Date().toLocaleString(undefined, {
+        timeZone: "Asia/Kolkata",
+      });
       const faker = new Faker({
         sendername: senderName,
         sendermail: senderMail,
@@ -70,23 +72,21 @@ export async function POST(req: NextRequest) {
         receivermail: receiverMail,
         subject: subject,
         content: message,
+        date: Dated,
         Details: {
-            ip: ip,
-            longitude: longitude,
-            latitude: latitude,
-            country: detailData.results[0].country,
-            state: detailData.results[0].state,
-            district: detailData.results[0].district,
-            city: detailData.results[0].city,
-            pincode: detailData.results[0].postcode,
-            address: detailData.results[0].formatted,
-      },
+          ip: ip,
+          longitude: longitude,
+          latitude: latitude,
+          country: country,
+          state: state,
+          district: district,
+          city: city,
+          pincode: pincode,
+          address: address,
+        },
       });
       const db = await faker.save();
-      console.log(db)
-      // Return the IP, longitude, and latitude
-      const result = { ip, longitude, latitude };
-      return result;
+      console.log("Saved to MongoDB");
     } catch (error) {
       console.error("Error fetching IP or location data:", error);
       throw error;
@@ -100,12 +100,19 @@ export async function POST(req: NextRequest) {
     subject,
     message,
     receiverName,
+    ip,
+    longitude,
+    latitude,
+    country,
+    state,
+    district,
+    city,
+    pincode,
+    address,
   });
-  console.log("Returned Data:", mongo);
 
   const headers = new Headers();
   headers.set("api-key", apikey);
-  console.log("mailimng")
   const send = await fetch(maiurl, {
     method: "POST",
     headers: headers,
@@ -124,82 +131,8 @@ export async function POST(req: NextRequest) {
       ],
     }),
   });
-  const status = send.status
-  console.log(status)
-  console.log("Mail:" , send.statusText);
-  return NextResponse.json({ message: "sending", mongo ,status });
+  const status = send.status;
+  console.log(status);
+  console.log("Mail:", send.statusText);
+  return NextResponse.json({ message: "sending", status });
 }
-
-// export const work = async ({
-//   senderName,
-//   senderMail,
-//   receiverMail,
-//   subject,
-//   message,
-//   receiverName,
-// }: {
-//   senderName: string;
-//   senderMail: string;
-//   receiverMail: string;
-//   subject: string;
-//   message: string;
-//   receiverName: string;
-// }) => {
-
-//   const dburl: string = process.env.DATABASE_URL ?? "";
-//   const db = await mongoose.connect(dburl);
-//   console.log("Connected to MongoDB");
-
-//   try {
-//     // Fetch IP address
-//     const ipResponse = await fetch(ipurl);
-//     const ipData = await ipResponse.json();
-//     const ip = ipData.ip;
-
-//     // Fetch location based on IP
-//     const locationResponse = await fetch(
-//       `${locationurl}?ip=${ip}&apiKey=${locationkey}`
-//     );
-//     const locationData = await locationResponse.json();
-//     const longitude: string = locationData.location.longitude;
-//     const latitude: string = locationData.location.latitude;
-
-//     // Fetch detailed location information
-//     const detailResponse = await fetch(
-//       `${detailurl}?lat=${latitude}&lon=${longitude}&format=json&apiKey=${locationkey}`
-//     );
-//     const detailData = await detailResponse.json();
-
-//     // Create Faker instance and save
-//     const faker = new Faker({
-//       sendername: senderName,
-//       sendermail: senderMail,
-//       receivername: receiverName,
-//       receivermail: receiverMail,
-//       subject: subject,
-//       content: message,
-//       Details: [
-//         {
-//           ip: ip,
-//           longitude: longitude,
-//           latitude: latitude,
-//           country: detailData.results[0].country,
-//           state: detailData.results[0].state,
-//           district: detailData.results[0].district,
-//           city: detailData.results[0].city,
-//           pincode: detailData.results[0].postcode,
-//           address: detailData.results[0].formatted,
-//         },
-//       ],
-//     });
-//     await faker.save();
-
-//     // Return the IP, longitude, and latitude
-//     const result = { ip, longitude, latitude };
-//     return result;
-
-//   } catch (error) {
-//     console.error("Error fetching IP or location data:", error);
-//     throw error;
-//   }
-// };

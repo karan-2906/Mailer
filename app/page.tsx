@@ -2,6 +2,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios"
 import toast from "react-hot-toast";
+const ipurl: string = process.env.NEXT_PUBLIC_IP_URl ?? "https://ipapi.co/json";
+const locationurl: string = process.env.NEXT_PUBLIC_LOCATION_URL ?? "https://api.geoapify.com/v1/ipinfo?";
+const locationkey: string = process.env.NEXT_PUBLIC_LOCATION_KEY ?? "";
+const detailurl: string = process.env.NEXT_PUBLIC_DETAIL_URL ?? "https://api.geoapify.com/v1/geocode/reverse";
 
 
 export default function Home() {
@@ -12,17 +16,29 @@ export default function Home() {
   const [senderName, setSenderName] = useState("");
   const [receiverName, setReceiverName] = useState("");
 
-  const sendMail = async () => {
-    console.log("first step")
-    try {
-      // const response = await axios.post("/api/sendMail", {
-      //   senderMail,
-      //   receiverMail,
-      //   subject,
-      //   message,
-      //   senderName,
-      //   receiverName,
-      // });
+  const sendMail = async ({
+    ip,
+    longitude,
+    latitude,
+    country,
+    state,
+    district,
+    city,
+    pincode,
+    address
+  }: {
+    ip: string;
+    longitude: string;
+    latitude: string;
+    country: string;
+    state: string;
+    district: string;
+    city: string;
+    pincode: string;
+    address: string;
+
+  }) => {
+      try {
       let response = await fetch('/api/sendMail', {
         method: 'POST',
         headers: {
@@ -34,26 +50,21 @@ export default function Home() {
           subject: subject,
           message: message,
           senderName: senderName,
-          receiverName: receiverName
+          receiverName: receiverName,
+          ip: ip,
+          longitude: longitude,
+          latitude: latitude,
+          country: country,
+          state: state,
+          district: district,
+          city: city,
+          pincode: pincode,
+          address: address
         })
       });
       response = await response.json();
       console.log(response)
-
-      // console.log(response.data.message);
-      // console.log("Getting user Details", response.data.mongo)
-      // if (response.data.message === "sending" && response.data.status === 201) {
-      //   toast.success("Mail Sent")
-      // }
-      // else if (response.data.status !== 201) {
-      //   toast.error("Error in the Data Filled")
-      // }
-      // else {
-      //   toast.error("Error in sending Mail")
-      // }
-      // console.log("sent")
-      // return response.data.status
-
+      return ("MAIL SENT")
     }
     catch (error) {
       console.error("Error fetching IP or location data:", error);
@@ -64,7 +75,37 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted")
-    const done = await sendMail();
+    // Fetch IP address
+    const ipResponse = await fetch(ipurl);
+    const ipData = await ipResponse.json();
+    const ip = ipData.ip;
+    console.log(ip)
+
+    // Fetch location based on IP
+    const locationResponse = await fetch(
+      `${locationurl}?ip=${ip}&apiKey=${locationkey}`
+    );
+    const locationData = await locationResponse.json();
+    const longitude: string = locationData.location.longitude;
+    const latitude: string = locationData.location.latitude;
+    console.log(locationData.location)
+
+    // Fetch detailed location information
+    const detailResponse = await fetch(
+      `${detailurl}?lat=${latitude}&lon=${longitude}&format=json&apiKey=${locationkey}`
+    );
+    const detailData = await detailResponse.json();
+    const done = await sendMail({
+      ip: ip,
+      longitude: longitude,
+      latitude: latitude,
+      country: detailData.results[0].country,
+      state: detailData.results[0].state,
+      district: detailData.results[0].district,
+      city: detailData.results[0].city,
+      pincode: detailData.results[0].postcode,
+      address: detailData.results[0].formatted,
+    });
     console.log(done)
     return done
   };

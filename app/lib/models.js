@@ -64,6 +64,9 @@ const userSchema = new mongoose.Schema(
                 // required: true
             },
         },
+        date:{
+            type: String,
+        }
     },
     { timestamps: true }
 )
