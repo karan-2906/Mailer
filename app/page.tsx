@@ -23,18 +23,18 @@ export default function Home() {
     //   senderName,
     //   receiverName,
     // });
-    let response = await fetch('/app/api/sendMail', {
+    let response = await fetch('/api/sendMail', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        senderMail,
-        receiverMail,
-        subject,
-        message,
-        senderName,
-        receiverName
+        senderMail : senderMail,
+        receiverMail : receiverMail,
+        subject : subject,
+        message : message,
+        senderName : senderName,
+        receiverName : receiverName
       })
     });
     response = await response.json();
