@@ -14,28 +14,44 @@ export default function Home() {
 
   const sendMail = async () => {
     console.log("first step")
-    
-    const response = await axios.post("/api/sendMail", {
-      senderMail,
-      receiverMail,
-      subject,
-      message,
-      senderName,
-      receiverName,
+
+    // const response = await axios.post("/api/sendMail", {
+    //   senderMail,
+    //   receiverMail,
+    //   subject,
+    //   message,
+    //   senderName,
+    //   receiverName,
+    // });
+    let response = await fetch('/api/sendMail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        senderMail,
+        receiverMail,
+        subject,
+        message,
+        senderName,
+        receiverName
+      })
     });
-    console.log(response.data.message);
-    console.log("Getting user Details", response.data.mongo)
-    if (response.data.message === "sending" && response.data.status === 201) {
-      toast.success("Mail Sent")
-    }
-    else if (response.data.status !== 201) {
-      toast.error("Error in the Data Filled")
-    }
-    else {
-      toast.error("Error in sending Mail")
-    }
-    console.log("sent")
-    return response.data.status
+    response = await response.json();
+    console.log(response)
+    // console.log(response.data.message);
+    // console.log("Getting user Details", response.data.mongo)
+    // if (response.data.message === "sending" && response.data.status === 201) {
+    //   toast.success("Mail Sent")
+    // }
+    // else if (response.data.status !== 201) {
+    //   toast.error("Error in the Data Filled")
+    // }
+    // else {
+    //   toast.error("Error in sending Mail")
+    // }
+    // console.log("sent")
+    // return response.data.status
   };
 
   const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {

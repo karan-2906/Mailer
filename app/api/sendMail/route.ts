@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
   const message: string = body.message;
   const senderName: string = body.senderName;
   const receiverName: string = body.receiverName;
-//   alert(body)
 
   const work = async ({
     senderName,
