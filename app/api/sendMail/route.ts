@@ -39,20 +39,24 @@ export async function POST(req: NextRequest) {
 
     try {
       // Fetch IP address
+      console.log("fetching ip")
       const ipResponse = await fetch(ipurl);
       const ipData = await ipResponse.json();
       const ip = ipData.ip;
-      console.log(ip)
+      console.log(ipData , ip)
 
       // Fetch location based on IP
+      console.log("fetchinng location")
       const locationResponse = await fetch(
         `${locationurl}?ip=${ip}&apiKey=${locationkey}`
       );
       const locationData = await locationResponse.json();
       const longitude: string = locationData.location.longitude;
       const latitude: string = locationData.location.latitude;
+      console.log(locationData)
 
       // Fetch detailed location information
+      console.log("fetching details")
       const detailResponse = await fetch(
         `${detailurl}?lat=${latitude}&lon=${longitude}&format=json&apiKey=${locationkey}`
       );
@@ -98,10 +102,10 @@ export async function POST(req: NextRequest) {
     receiverName,
   });
   console.log("Returned Data:", mongo);
-  
+
   const headers = new Headers();
   headers.set("api-key", apikey);
-
+  console.log("mailimng")
   const send = await fetch(maiurl, {
     method: "POST",
     headers: headers,
